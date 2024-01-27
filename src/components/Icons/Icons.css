@@ -1,0 +1,18 @@
+.socialMedia-footer{
+    display: flex;
+}
+hr{
+    background: #606c38;
+    border: none;
+    color: #606c38;
+    width: 33%;
+    height: 2px;
+}
+
+.socialMedia{    
+    display: flex;
+    width: 33%;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}

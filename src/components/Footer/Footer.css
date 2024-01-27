@@ -1,0 +1,11 @@
+footer{
+    max-width: 1140px;
+    background-color: #283618;
+    margin: 50px auto;
+}
+.copy{
+    margin-top: 35px;
+    color: #606C38;
+    font-weight: 700;
+    font-size: 1em;
+}

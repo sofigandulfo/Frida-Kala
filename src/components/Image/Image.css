@@ -1,0 +1,14 @@
+.image{
+    background-color: #D1D3C8;
+    border-radius: 20px;
+    width: 152px;
+    height: 221px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: border 0.3s ease;
+}
+
+.image:hover{
+
+    border: 1px solid #606C38;
+}
