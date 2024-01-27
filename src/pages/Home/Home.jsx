@@ -1,10 +1,10 @@
 
-import Main from "../../components/Main/Main"
+import MainHome from "../../components/Main/MainHome/MainHome"
 
 function Home() {
   return (
     <>
-        <Main></Main>
+        <MainHome />
     </>
   )
 }

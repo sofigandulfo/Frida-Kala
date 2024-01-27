@@ -12,3 +12,10 @@
 
     border: 1px solid #606C38;
 }
+
+/* Imagen del about */
+
+.about-image{
+    width: 100%;
+    height: auto;
+}

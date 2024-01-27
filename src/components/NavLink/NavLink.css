@@ -1,3 +1,4 @@
+
 .button{
     font-size: 20px;
     font-weight: 400;
@@ -8,11 +9,12 @@
     border-radius: 50px;
 }
 
-.button.active {
+.is-active{
     background-color: #606C38;
 }
 
-.button:not(.active):hover{
+
+.button:not(.is-active):hover{
     background-color: #606C3880;
     cursor: pointer;
 }

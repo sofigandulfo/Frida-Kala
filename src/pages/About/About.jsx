@@ -1,8 +1,9 @@
+import MainAbout from "../../components/Main/MainAbout/MainAbout"
 
 function About() {
   return (
     <>
-    <h1>Hola</h1>
+    <MainAbout />
     </>
   )
 }

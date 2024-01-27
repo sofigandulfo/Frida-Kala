@@ -1,0 +1,15 @@
+.input {
+    font-size: 20px;
+    margin-bottom: 50px;
+    padding: 28px 47px;
+    color: #FFF;
+    background-color: #606C38;
+    border: none;
+    border-radius: 50px;
+    transition: background-color 0.3s ease;
+}
+
+.input:hover{
+    cursor: pointer;
+    background-color: #283618;
+}
