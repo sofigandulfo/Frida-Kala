@@ -1,12 +1,14 @@
+import MainHome from "../../components/Main/MainHome/MainHome";
 
-import MainHome from "../../components/Main/MainHome/MainHome"
 
 function Home() {
   return (
     <>
-        <MainHome />
+      <MainHome />
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;
+
+

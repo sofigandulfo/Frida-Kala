@@ -1,16 +1,18 @@
 import PropTypes from 'prop-types';
-import './Image.css'
-function Image({className}) {
+import './Image.css';
+
+const Image = ({ className, src }) => {
   return (
     <>
-        <img className={className} src="#"/>
+      <img className={className} src={src} />
     </>
   )
 }
 
-export default Image
-
-
 Image.propTypes = {
-  className: PropTypes.string.isRequired
+  className: PropTypes.string.isRequired,
+  src: PropTypes.string.isRequired,
+
 };
+
+export default Image;
