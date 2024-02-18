@@ -1,101 +1,26 @@
-// import Image from "../Image/Image";
-// import { useEffect, useState } from "react";
-// import appFirebase from "../../credentials";
-// import './Album.css'
-
-// import {
-//   getFirestore,
-//   collection,
-//   getDocs,
-
-// } from "firebase/firestore";
-
-// const db = getFirestore(appFirebase);
-
-// const Album = () => {
-//   const [photos, setPhotos] = useState([]);
-
-//   useEffect(() => {
-//     const getPhotos = async () => {
-//       try {
-//         const querySnapshot = await getDocs(collection(db, "imagesFrida"));
-//         const docs = [];
-//         querySnapshot.forEach((doc) => {
-//           docs.push({ ...doc.data(), id: doc.id });
-//         });
-//         setPhotos(docs);
-//       } catch (error) {
-//         console.log(error);
-//       }
-//     };
-//     getPhotos();
-//   }, [photos]);
-
-//   return (
-//     <div className="bento-container">
-//       {photos.map((photo, i) => (
-//         <div key={photo.id} className={`card div${i + 1}`}>
-//         <Image src={photo.imagen} className="image"></Image>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default Album;
-
-// const [allPhotos, setAllPhotos] = useState([]);
-// const [displayedPhotos, setDisplayedPhotos] = useState([]);
-// const [remainingPhotos, setRemainingPhotos] = useState([]);
-
-// useEffect(() => {
-//   const getPhotos = async () => {
-//     try {
-//       const querySnapshot = await getDocs(collection(db, "imagesFrida"));
-//       const docs = [];
-//       querySnapshot.forEach((doc) => {
-//         docs.push({ ...doc.data(), id: doc.id });
-//       });
-//       setAllPhotos(docs);
-//       setRemainingPhotos(docs);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-//   getPhotos();
-// }, []);
-
-// const displayNextPhotos = () => {
-//   if (remainingPhotos.length === 0) return;
-
-//   const remainingToShow = Math.min(remainingPhotos.length, 10 - displayedPhotos.length);
-//   const randomIndexes = [];
-
-//   for (let i = 0; i < remainingToShow; i++) {
-//     const randomIndex = Math.floor(Math.random() * remainingPhotos.length);
-//     const randomPhoto = remainingPhotos[randomIndex];
-//     randomIndexes.push(randomIndex);
-//     setDisplayedPhotos([...displayedPhotos, randomPhoto]);
-//   }
-
-//   const newRemainingPhotos = remainingPhotos.filter((_, index) => !randomIndexes.includes(index));
-//   setRemainingPhotos(newRemainingPhotos);
-// };
-
 import Image from "../Image/Image";
 import { useEffect, useState } from "react";
+import { usePhotoContext } from "../../hooks/usePhotoContext";
 import appFirebase from "../../credentials";
 import "./Album.css";
+import InfiniteScroll from "react-infinite-scroll-component";
+import ModalPopup from "react-modal-popup";
+// import Modal from 'react-modal';
+import Box from "@mui/material/Box";
+import Masonry from "@mui/lab/Masonry";
 
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 
+// Modal.setAppElement('#root');
 
 
 const db = getFirestore(appFirebase);
 const Album = () => {
-  const [allPhotos, setAllPhotos] = useState([]);
-  const [shownPhotos, setShownPhotos] = useState([]);
+  const { setAllPhotos } = usePhotoContext();
+  const [showPhotos, setShowPhotos] = useState([]);
   const [remainingPhotos, setRemainingPhotos] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectImagen, setSelectImagen] = useState(null);
 
   useEffect(() => {
     const fetchPhotos = async () => {
@@ -106,10 +31,10 @@ const Album = () => {
           docs.push({ ...doc.data(), id: doc.id });
         });
         setAllPhotos(docs);
-        console.log(allPhotos)
-        shuffleArray(docs); // Mezclar las imágenes
-        setShownPhotos(docs.slice(0, 10)); // Mostrar las primeras 10 imágenes
-        setRemainingPhotos(docs.slice(10)); // Almacenar el resto para el botón "Ver más"
+        shuffleArray(docs);
+        const initialPhotos = docs.slice(0, 10);
+        setShowPhotos(initialPhotos);
+        setRemainingPhotos(docs.slice(10));
       } catch (error) {
         console.log(error);
       }
@@ -126,22 +51,54 @@ const Album = () => {
   };
 
   const showMoreImages = () => {
-    if(remainingPhotos.length > 0 ){
+    if (remainingPhotos.length > 0) {
       const nextImages = remainingPhotos.slice(0, 10); // Tomar las próximas 10 imágenes para mostrar
-      setShownPhotos((prevPhotos) => [...prevPhotos, ...nextImages]); // Agregarlas a las imágenes mostradas
+      setShowPhotos((prevPhotos) => [...prevPhotos, ...nextImages]); // Agregarlas a las imágenes mostradas
       setRemainingPhotos(remainingPhotos.slice(10)); // Eliminar las imágenes mostradas de las restantes
     }
   };
 
+  const handleShowModal = (imagen) => {
+    setIsOpen(true);
+    setSelectImagen(imagen);
+    document.body.style.overflow = 'hidden';
+
+  };
+
+  const handleCloseModal = () => {
+    setIsOpen(false);
+    setSelectImagen(null);
+    document.body.style.overflow = 'auto';
+  };
   return (
     <>
-      <div className="grid-container">
-        {shownPhotos.map((photo) => (
-            <Image key={photo.id} src={photo.imagen} className="grid-item"></Image>
-        ))}
-      </div>
-        <button onClick={showMoreImages}>Ver más</button>
-
+      <InfiniteScroll
+        dataLength={showPhotos.length}
+        hasMore={remainingPhotos.length > 0}
+        next={showMoreImages}
+        loader={<h4>loading...</h4>}
+        endMessage={<p className="endMessage">No hay más imágenes</p>}
+      >
+        <Box sx={{ maxWidth: 960, minHeight: 393 }} className="grid-container">
+          <Masonry
+            columns={{ xs: 2, sm: 2, md: 3, xl: 4 }}
+            spacing={2}
+            id="masonry"
+          >
+            {showPhotos.map((photo) => (
+              <Image
+                key={photo.id}
+                src={photo.imagen}
+                className="grid-item"
+                onClick={() => handleShowModal(photo.imagen)}
+              ></Image>
+            ))}
+          </Masonry>
+        </Box>
+      </InfiniteScroll>
+      <ModalPopup isOpen={isOpen} onCloseModal={handleCloseModal}>
+        {selectImagen && <img src={selectImagen} className="image-modal" />}
+      </ModalPopup>
     </>
   );
 };

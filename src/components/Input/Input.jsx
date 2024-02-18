@@ -1,44 +1,56 @@
-
+import './Input.css';
 import appFirebase from "../../credentials";
+import { useRef } from 'react'
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import Add from "../../assets/Add";
 
-import { getFirestore, collection, addDoc } from 'firebase/firestore'
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-
-const db = getFirestore(appFirebase)
-const storage = getStorage(appFirebase)
+const db = getFirestore(appFirebase);
+const storage = getStorage(appFirebase);
 
 function Input() {
+  const fileInputRef = useRef(null);
 
-    const guardarInfo = async (e) => {
-        e.preventDefault();
-        const archivoImg = e.target.file.files[0];
+  const handleClick = () => {
+    fileInputRef.current.click();
+  };
 
-        const refArchivo = ref(storage, `documentos/${archivoImg.name}`);
-        await uploadBytes(refArchivo, archivoImg)
-        const urlImgDesc = await getDownloadURL(refArchivo);
+  const guardarInfo = async (e) => {
+    e.preventDefault();
+    const archivoImg = e.target.file.files[0];
 
-        const newImage = {
-            imagen: urlImgDesc
-        }
+    const refArchivo = ref(storage, `documentos/${archivoImg.name}`);
+    await uploadBytes(refArchivo, archivoImg);
+    const urlImgDesc = await getDownloadURL(refArchivo);
 
-        try {
-            await addDoc(collection(db, 'imagesFrida'), {
-                ...newImage
-            })
-        } catch(error){
-            console.log(error);
-        }
+    const newImage = {
+      imagen: urlImgDesc,
+    };
 
-        e.target.file.value = '';
+    try {
+      await addDoc(collection(db, "imagesFrida"), {
+        ...newImage,
+      });
+    } catch (error) {
+      console.log(error);
     }
 
-    return (
-        <form onSubmit={guardarInfo}>
-            <input type="file" id="file" placeholder="Agregar imagen de Frida" className="input-image"  required/>
+    e.target.file.value = "";
+  };
 
-            <button className="btn button-primary">Subir</button>
-        </form>
-    )
+  return (
+    <div className="input-image" onClick={handleClick}>
+        <Add />
+      <input
+        type="file"
+        id="file"
+        ref={fileInputRef}
+        style={{display: 'none'}}
+        onChange={guardarInfo}
+        required
+      />
+    </div>
+  );
 }
 
-export default Input
+export default Input;

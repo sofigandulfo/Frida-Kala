@@ -1,5 +1,6 @@
 import "./Navbar.css";
 import { NavLink } from "../NavLink/NavLink";
+import Input from "../Input/Input";
 
 function Navbar() {
   return (
@@ -7,7 +8,7 @@ function Navbar() {
       <nav className="navbar">
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
-        <NavLink to="/contact">Contact</NavLink>
+        <Input></Input>
       </nav>
     </>
   );

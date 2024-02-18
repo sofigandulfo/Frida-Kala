@@ -2,8 +2,8 @@
 const SvgGithub = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="1em"
-    height="1em"
+    width="1.4em"
+    height="1.4em"
     fill="none"
     viewBox="0 0 28 27"
     {...props}
