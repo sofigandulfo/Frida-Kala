@@ -11,10 +11,43 @@ main{
     margin: 0 auto;
     font-size: 6rem;
     font-weight: 100;
+    color: #000;
 }
 
 .subtitle{
-    font-size: 48px;
+    font-size: 3rem;
     font-weight: 100;
     margin: 0 auto;
+    color: #000;
 }
+
+@media screen and (max-width: 550px){
+    .title{
+        font-size: 5rem;
+    }
+
+    .subtitle{
+        font-size: 2rem;
+    }
+}
+
+@media screen and (max-width: 450px){
+    .title{
+        font-size: 4rem;
+    }
+
+    .subtitle{
+        font-size: 2rem;
+    }
+}
+
+@media screen and (max-width: 330px){
+    .title{
+        font-size: 3rem;
+    }
+
+    .subtitle{
+        font-size: 2rem;
+    }
+}
+

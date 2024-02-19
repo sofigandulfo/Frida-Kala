@@ -30,3 +30,11 @@ body {
     background-color: #283618;
   }
 } */
+
+
+
+@media only screen and (max-width: 600px) {
+  /* Reglas CSS para pantallas más pequeñas o iguales a 600px */
+
+  
+}

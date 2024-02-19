@@ -1,13 +1,96 @@
-
-.navbar{
+.navbar {
     width: 30%;
     display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-}
-
-nav a{
+    justify-content: flex-end;
+    flex-flow: row wrap;
+    align-items: center;
+    margin-right: 10px;
+  }
+  
+  .navbar-ul {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    overflow: hidden;
+    transition: height 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .navbar-li {
+    margin:  0.5rem;
+  }
+  
+  nav a {
     border-radius: 50px;
     text-decoration: none;
-}
-
+  }
+  
+  .menu-icon {
+    display: none;
+  }
+  
+  @media screen and (max-width: 1010px) {
+    .navbar {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+  
+    .navbar-ul {
+      position: absolute;
+      top: 68px;
+      left: 0;
+      background-color: #283618;
+      width: 100%;
+      text-align: center;
+      padding: 1rem;
+      flex-direction: column; /* Cambiamos la dirección del flujo a vertical */
+      justify-content: center; /* Centramos los elementos verticalmente */
+      align-items: center; /* Centramos los elementos horizontalmente */
+      padding: 0; /* Quitamos el padding */
+    }
+  
+    .menu-icon {
+      display: block;
+      cursor: pointer;
+    }
+  
+    .navbar-ul.active {
+      display: flex;
+      animation: slideDown 0.3s ease forwards;
+    }
+  
+    .navbar-ul:not(.active) {
+      display: flex;
+      animation: slideUp 0.3s ease forwards;
+    }
+  
+    .navbar-li {
+      margin: 0.5rem;
+    }
+  }
+  
+  @keyframes slideDown {
+    from {
+      height: 0;
+      opacity: 0;
+    }
+    to {
+      height: auto;
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      height: auto;
+      opacity: 1;
+    }
+    to {
+      height: 0;
+      opacity: 0;
+    }
+  }
+  
