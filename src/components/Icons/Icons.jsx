@@ -16,7 +16,7 @@ function Icons() {
           <Icon1 className="socialMedia-icon" />
         </a>
         <a
-          href="https://www.linkedin.com/in/sofia-gandulfo-0a70a0265/"
+          // href="https://www.linkedin.com/in/sofia-gandulfo-0a70a0265/"
           target="_blank"
           rel="noreferrer"
         >

@@ -22,7 +22,7 @@ function Navbar() {
             <NavLink to="/about">About</NavLink>
           </li>
           <li className="navbar-li">
-            <Input />
+            {/* <Input /> */}
           </li>
         </ul>
         <div className="menu-icon" onClick={toggleMenu}>
