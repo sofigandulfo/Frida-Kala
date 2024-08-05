@@ -3,15 +3,10 @@ import { useEffect, useState } from "react";
 import { usePhotoContext } from "../../hooks/usePhotoContext";
 import appFirebase from "../../credentials";
 import "./Album.css";
-import InfiniteScroll from "react-infinite-scroll-component";
 import ModalPopup from "react-modal-popup";
-// import Modal from 'react-modal';
 import Box from "@mui/material/Box";
 import Masonry from "@mui/lab/Masonry";
-
 import { getFirestore, collection, getDocs } from "firebase/firestore";
-
-// Modal.setAppElement('#root');
 
 
 const db = getFirestore(appFirebase);
@@ -21,6 +16,7 @@ const Album = () => {
   const [remainingPhotos, setRemainingPhotos] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [selectImagen, setSelectImagen] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchPhotos = async () => {
@@ -42,7 +38,7 @@ const Album = () => {
     fetchPhotos();
   }, []);
 
-  // Función para mezclar un array (algoritmo de Fisher-Yates)
+
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -52,9 +48,13 @@ const Album = () => {
 
   const showMoreImages = () => {
     if (remainingPhotos.length > 0) {
-      const nextImages = remainingPhotos.slice(0, 10); // Tomar las próximas 10 imágenes para mostrar
-      setShowPhotos((prevPhotos) => [...prevPhotos, ...nextImages]); // Agregarlas a las imágenes mostradas
-      setRemainingPhotos(remainingPhotos.slice(10)); // Eliminar las imágenes mostradas de las restantes
+      setLoading(true); 
+      setTimeout(() => {
+        const nextImages = remainingPhotos.slice(0, 10);
+        setShowPhotos((prevPhotos) => [...prevPhotos, ...nextImages]);
+        setRemainingPhotos(remainingPhotos.slice(10));
+        setLoading(false); 
+      }, 500); 
     }
   };
 
@@ -62,7 +62,6 @@ const Album = () => {
     setIsOpen(true);
     setSelectImagen(imagen);
     document.body.style.overflow = 'hidden';
-
   };
 
   const handleCloseModal = () => {
@@ -70,32 +69,38 @@ const Album = () => {
     setSelectImagen(null);
     document.body.style.overflow = 'auto';
   };
+
   return (
     <>
-      <InfiniteScroll
-        dataLength={showPhotos.length}
-        hasMore={remainingPhotos.length > 0}
-        next={showMoreImages}
-        loader={<h4>loading...</h4>}
-        endMessage={<p className="endMessage">No hay más imágenes</p>}
-      >
-        <Box sx={{ maxWidth: 960, minHeight: 393 }} className="grid-container">
-          <Masonry
-            columns={{ xs: 2, sm: 2, md: 3, xl: 4 }}
-            spacing={2}
-            id="masonry"
-          >
-            {showPhotos.map((photo) => (
+      <Box sx={{ maxWidth: 960, minHeight: 393 }} className="grid-container">
+        <Masonry
+          columns={{ xs: 2, sm: 2, md: 3, xl: 4 }}
+          spacing={2}
+          id="masonry"
+        >
+          {showPhotos.map((photo) => (
+            <div key={photo.id} className="image-container">
               <Image
-                key={photo.id}
                 src={photo.imagen}
                 className="grid-item"
                 onClick={() => handleShowModal(photo.imagen)}
-              ></Image>
-            ))}
-          </Masonry>
-        </Box>
-      </InfiniteScroll>
+                onLoad={(e) => e.target.classList.add('loaded')} 
+                alt="gallery"
+              />
+              <div className="spinner"></div>
+            </div>
+          ))}
+        </Masonry>
+      </Box>
+      {remainingPhotos.length > 0 && (
+        <button
+          onClick={showMoreImages}
+          className="load-more-button"
+          disabled={loading} 
+        >
+          {loading ? 'Cargando...' : 'Cargar más'}
+        </button>
+      )}
       <ModalPopup isOpen={isOpen} onCloseModal={handleCloseModal}>
         {selectImagen && <img src={selectImagen} className="image-modal" />}
       </ModalPopup>

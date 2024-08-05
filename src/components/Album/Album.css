@@ -1,44 +1,102 @@
-
-.grid-container{
-    /* columns: 5 230px;
-    column-gap: 10px; */
+.grid-container {
     padding: .5rem;
     margin: 2rem auto;
     max-width: 960px;
-}
-
-#masonry{
+  }
+  
+  #masonry {
     margin: 0 auto;
-}
-
-.grid-item {
+  }
+  
+  .grid-item {
+    position: relative;
     width: 100%;
     margin-bottom: 10px;
-    background-color: lightgray;
-}
-
-img {
-    width: 100%;
-    border-radius: 10px;
-}
-
-#modal-wrapper{
+    background-color: rgba(211, 211, 211, 0);
     overflow: hidden;
-    max-height: 100vh; 
+    min-height: 200px;
+  }
+  
+  .grid-item {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover; 
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .grid-item.loaded {
+    opacity: 1;
+  }
+  
+  #modal-wrapper {
+    overflow: hidden;
+    max-height: 100vh;
     max-width: 100vw !important;
     height: 100% !important;
-    padding:  0px !important;
+    padding: 0 !important;
     background-color: rgba(0, 0, 0, 0.578) !important;
-}
-
-#modal-content {
+  }
+  
+  #modal-content {
     display: flex;
     justify-content: center;
     max-width: 70%;
     padding: 0 !important;
-}
-
-.image-modal{
+  }
+  
+  .image-modal {
     max-height: 100vh;
     max-width: 100vw;
-}
+  }
+  
+  .load-more-button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #606C38;
+  
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .load-more-button:disabled {
+    background-color: #ffffff;
+    cursor: not-allowed;
+  }
+  
+  .load-more-button:hover:not(:disabled) {
+    background-color: #283618;
+  }
+  
+
+  .image-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    transform: translate(-50%, -50%);
+    display: none;
+  }
+  
+  .grid-item img:not(.loaded) + .spinner {
+    display: block;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

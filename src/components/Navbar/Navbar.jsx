@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { NavLink } from '../NavLink/NavLink';
 import Input from '../Input/Input';
-import './Navbar.css'; // Asegúrate de tener este archivo con los estilos necesarios
+import './Navbar.css';
 import MenuIcon from '../../assets/Menu';
 
 function Navbar() {
